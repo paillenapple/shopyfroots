@@ -23,7 +23,14 @@ const GlobalStyle = createGlobalStyle`
   }
 
   #root {
-    padding :30px;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    padding: 30px;
+
+    > :not(:first-child) {
+      margin-top: 30px;
+    }
   }
 `;
 

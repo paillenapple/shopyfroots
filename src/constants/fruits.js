@@ -4,31 +4,31 @@ const fruitsList = [
   {
     label: "citron vert",
     icon: fruits.lemon,
-    color: "#a6ff4d",
+    color: "#9BC313",
     price: 3.5
   },
   {
     label: "pomme",
     icon: fruits.apple,
-    color: "#cc0000",
+    color: "#B32131",
     price: 1.5
   },
   {
     label: "cerise",
     icon: fruits.cherry,
-    color: "#cc0044",
+    color: "#752C37",
     price: 3.75
   },
   {
     label: "raisin",
     icon: fruits.grapes,
-    color: "#4d0026",
+    color: "#392433",
     price: 3.25
   },
   {
     label: "citron",
     icon: fruits.lemon,
-    color: "#ffff4d",
+    color: "#F3D325",
     price: 2
   },
   {
@@ -40,7 +40,7 @@ const fruitsList = [
   {
     label: "poire",
     icon: fruits.pear,
-    color: "#8fef8f",
+    color: "#D0E33D",
     price: 2.5
   }
 ];

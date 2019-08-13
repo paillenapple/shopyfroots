@@ -16,7 +16,17 @@ const removeFruit = (newList, newNbFruits, newTP) => {
   };
 };
 
+const emptyCart = (newList, newNbFruits, newTP) => {
+  return {
+    type: "REMOVE_FRUIT",
+    newList,
+    newNbFruits,
+    newTP
+  };
+};
+
 export {
   addFruit,
   removeFruit,
+  emptyCart
 }

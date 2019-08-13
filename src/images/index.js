@@ -6,7 +6,3 @@ export const fruits = {
   orange: require("./orange.svg"),
   pear: require("./pear.svg"),
 };
-
-export const cart = require("./cart.svg");
-export const plus = require("./plus.svg");
-export const minus = require("./minus.svg");

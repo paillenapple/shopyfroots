@@ -1,117 +1,81 @@
 import React from "react";
 import styled from "styled-components";
 
-class FruitBasket extends React.Component {
-  addFruit = e => {
-    const newList = this.props.list.map(f => {
-      if (f.label === this.props.label) {
-        const newObject = {label: this.props.label, quantity: f.quantity + 1 };
-        const mergedObject = {...f, ...newObject};
-        return mergedObject;
-      } else {
-        return f;
-      }
-    });
-    const newNbFruits = this.props.nbFruits + 1;
-    const newTP = this.props.totalPrice + parseFloat(e.target.dataset.price);
-    this.props.addFruit(newList, newNbFruits, newTP);
+const FruitBasket = props => {
+  const { background, icon, label, price, quantity } = props;
+  const addFruit = e => {
+    props.addFruit(label, e.target.dataset.price);
   };
 
-  removeFruit = e => {
-    const currentFruit = this.props.list.filter(f => f.label === this.props.label)[0];
-    if (currentFruit.quantity > 0) {
-      const newList = this.props.list.map(f => {
-        if (f.label === this.props.label) {
-          const newObject = {
-            label: this.props.label,
-            quantity: f.quantity - 1
-          };
-          const mergedObject = { ...f, ...newObject };
-          return mergedObject;
-        } else {
-          return f;
-        }
-      });
-
-      const newNbFruits =
-        this.props.nbFruits > 0
-          ? this.props.nbFruits - 1
-          : this.props.nbFruits;
-
-      const newTP =
-        this.props.totalPrice - parseFloat(e.target.dataset.price) >= 0
-          ? this.props.totalPrice - parseFloat(e.target.dataset.price)
-          : this.props.totalPrice;
-
-      this.props.removeFruit(newList, newNbFruits, newTP);
-    }
+  const removeFruit = e => {
+    props.removeFruit(label, e.target.dataset.price);
   };
-
-  render() {
-    return (
-      <Wrapper1>
-        <StyledHeader background={this.props.background}>
-          <Wrapper2 background={this.props.background}>
-            <Wrapper4 background={this.props.background}>
-              <StyledImg src={this.props.icon} alt="" />
+  return (
+    <Wrapper1>
+      <StyledHeader background={background}>
+        <Wrapper2 background={background}>
+          {icon !== null && typeof icon !== "undefined" && (
+            <Wrapper4 background={background}>
+              <StyledImg src={icon} alt="" />
             </Wrapper4>
-          </Wrapper2>
-          <StyledSpan background={this.props.background}>{this.props.label}</StyledSpan>
-        </StyledHeader>
-        <Wrapper3 background={this.props.background}>
-          <Wrapper5>
-            <Wrapper7>
-              Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorum
-              delectus officia debitis error quam eos, assumenda quis, ab
-              mollitia eligendi aliquam consectetur quas quia suscipit sit vero
-              vel voluptates rem?
-            </Wrapper7>
-            <Wrapper9>
-              <Wrapper8>{this.props.price}€ le kilo</Wrapper8>
-              <Wrapper6>
-                <StyledButton
-                  background={this.props.background}
-                  data-price={this.props.price}
-                  onClick={this.removeFruit}
-                  type="button"
-                >
-                  -1
-                </StyledButton>
-                <StyledButton
-                  background={this.props.background}
-                  data-price={this.props.price}
-                  onClick={this.addFruit}
-                  type="button"
-                >
-                  +1
-                </StyledButton>
-              </Wrapper6>
-            </Wrapper9>
-          </Wrapper5>
-        </Wrapper3>
-      </Wrapper1>
-    );
-  }
-}
+          )}
+        </Wrapper2>
+        <StyledSpan background={background}>{label}</StyledSpan>
+      </StyledHeader>
+      <Wrapper3 background={background}>
+        <Wrapper5>
+          <Wrapper7>
+            Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorum
+            delectus officia debitis error quam eos, assumenda quis, ab
+            mollitia eligendi aliquam consectetur quas quia suscipit sit vero
+            vel voluptates rem?
+          </Wrapper7>
+          <Wrapper9>
+            <Wrapper8>{price}€ le kilo</Wrapper8>
+            <Wrapper6>
+              <StyledButton
+                background={background}
+                data-price={price}
+                disabled={quantity === 0}
+                onClick={e => removeFruit(e)}
+                type="button"
+              >
+                -1
+              </StyledButton>
+              <StyledButton
+                background={background}
+                data-price={price}
+                onClick={e => addFruit(e)}
+                type="button"
+              >
+                +1
+              </StyledButton>
+            </Wrapper6>
+          </Wrapper9>
+        </Wrapper5>
+      </Wrapper3>
+    </Wrapper1>
+  );
+};
+
+FruitBasket.defaultProps = {
+  background: "#ddd",
+  icon: null,
+  label: "Fruit",
+  price: 1
+};
 
 export default FruitBasket;
 
 //-----//
 
-const Wrapper1 = styled.div`
-  display: flex;
-  flex-direction: column;
-  min-width: 240px;
-  min-height: 240px;
-  border-radius: 3px;
-`;
 
 const Wrapper2 = styled.div`
   position: relative;
   display: flex;
   width: 50px;
-  border-radius: 3px 0 0 0;
   background: linear-gradient(315deg, white, ${props => props.background});
+  border-radius: 3px 0 0 0;
 `;
 
 const Wrapper3 = styled.div`
@@ -209,4 +173,29 @@ const StyledButton = styled.button`
   padding: 0;
   border: ${props => `3.75px solid ${props.background}`};
   border-radius: 50px;
+  transition: background ease-in-out 0.15s, color ease-in-out 0.15s,
+    transform linear 0.1s;
+
+  &:disabled {
+    background: #eee;
+    color: #aaa;
+    border: 3.75px solid #ccc;
+  }
+
+  &:hover:not(:disabled) {
+    background: ${props => props.background};
+    color: white;
+  }
+
+  &:active {
+    transform: scale(1.15) rotate(15deg);
+  }
+`;
+
+const Wrapper1 = styled.div`
+  display: flex;
+  flex-direction: column;
+  min-width: 240px;
+  min-height: 240px;
+  border-radius: 3px;
 `;
