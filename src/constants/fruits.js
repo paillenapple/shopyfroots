@@ -2,31 +2,31 @@ import {fruits} from "../images";
 
 const fruitsList = [
   {
-    label: "citron vert",
+    label: "lime",
     icon: fruits.lemon,
     color: "#9BC313",
     price: 3.5
   },
   {
-    label: "pomme",
+    label: "apple",
     icon: fruits.apple,
     color: "#B32131",
     price: 1.5
   },
   {
-    label: "cerise",
+    label: "cherry",
     icon: fruits.cherry,
     color: "#752C37",
     price: 3.75
   },
   {
-    label: "raisin",
+    label: "grapes",
     icon: fruits.grapes,
     color: "#392433",
     price: 3.25
   },
   {
-    label: "citron",
+    label: "lemon",
     icon: fruits.lemon,
     color: "#F3D325",
     price: 2
@@ -38,7 +38,7 @@ const fruitsList = [
     price: 2.25
   },
   {
-    label: "poire",
+    label: "pear",
     icon: fruits.pear,
     color: "#D0E33D",
     price: 2.5

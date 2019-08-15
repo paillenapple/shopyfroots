@@ -1,5 +1,5 @@
 import React from "react";
-import styled from "styled-components";
+import styled from "styled-components/macro";
 
 const CTABar = (props) => {
   const emptyCart = () => {
@@ -7,8 +7,13 @@ const CTABar = (props) => {
   };
   return (
     <Wrapper1>
-      <StyledButton background="#B02E0C" type="button" onClick={emptyCart}>
-        Vider mon panier
+      <StyledButton
+        background="#B02E0C"
+        disabled={props.nbFruits === 0}
+        type="button"
+        onClick={emptyCart}
+      >
+        Empty cart
       </StyledButton>
       <StyledButton
         className="validate"
@@ -16,8 +21,7 @@ const CTABar = (props) => {
         disabled={props.nbFruits === 0}
         type="button"
       >
-        Valider ma commande ({props.nbFruits}{" "}
-        {props.nbFruits <= 1 ? "fruit" : "fruits"})
+        Proceed ({props.nbFruits} {props.nbFruits <= 1 ? "item" : "items"})
       </StyledButton>
     </Wrapper1>
   );
@@ -37,17 +41,22 @@ const Wrapper1 = styled.div`
 `;
 
 const StyledButton = styled.button`
-  font: 700 0.8rem Montserrat, sans-serif;
+  font: 400 1rem "Open Sans", sans-serif;
   background: ${props => props.background};
   color: white;
   padding: 12px 18px;
   border: none;
   border-radius: 3px;
-  transition: background ease-in-out 0.15s, color ease-in-out 0.15s;
+  transition: background ease-in-out 0.15s,
+    color ease-in-out 0.15s, transform linear 0.1s;
 
   &:disabled {
-    background: #e0dddc;
+    background: #DDDCDC;
     color: #a3a1a1;
     border-radius: 3px;
+  }
+
+  &:active {
+    transform: scale(1.1);
   }
 `;

@@ -4,13 +4,12 @@ import { Provider } from "react-redux";
 import store from "./store";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
-import { createGlobalStyle } from "styled-components";
+import { createGlobalStyle, ThemeProvider } from "styled-components";
+import { theme } from "./theme";
 
 const GlobalStyle = createGlobalStyle`
-  @import url('https://fonts.googleapis.com/css?family=Montserrat:400,700|Nunito&display=swap');
-
   html {
-    font: 400 18px Nunito, sans-serif;
+    font: ${props => props.theme.fonts.paragraph};
     box-sizing: border-box;
   }
 
@@ -19,6 +18,8 @@ const GlobalStyle = createGlobalStyle`
   }
 
   body {
+    color: ${props => props.theme.colors.oakwood};
+    letter-spacing: .25px;
     margin: 0;
   }
 
@@ -26,22 +27,19 @@ const GlobalStyle = createGlobalStyle`
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    padding: 30px;
-
-    > :not(:first-child) {
-      margin-top: 30px;
-    }
   }
 `;
 
 const render = () => {
   ReactDOM.render(
-    <>
-      <GlobalStyle />
-      <Provider store={store}>
-        <App />
-      </Provider>
-    </>,
+    <ThemeProvider theme={theme}>
+      <>
+        <GlobalStyle />
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </>
+    </ThemeProvider>,
     document.getElementById("root")
   );
 };

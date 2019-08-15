@@ -1,14 +1,27 @@
 import React from "react";
 import { connect } from "react-redux";
 import { addFruit, removeFruit, emptyCart } from "./actions";
-import styled from "styled-components";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import styled from "styled-components/macro";
 import { fruitsList } from "./constants";
-import FruitBasket from "./FruitBasket";
-import MyBasket from "./MyBasket";
-import CTABar from "./CTABar";
+import {
+  Header,
+  FruitBasket,
+  MyBasket,
+  CTABar,
+  Footer
+} from "./components";
 
 class App extends React.Component {
-  addFruit = (label, price) => {
+  notify = notif => {
+    toast(notif, {
+      className: "toast-wrapper",
+      bodyClassName: "toast-body",
+    });
+  }
+
+  addFruit = (label, price, color) => {
     const { addFruit, list, nbFruits, totalPrice } = this.props;
     const newList = list.map(f => {
       if (f.label === label) {
@@ -24,10 +37,12 @@ class App extends React.Component {
     });
     const newNbFruits = nbFruits + 1;
     const newTP = totalPrice + parseFloat(price);
+    const message = <span>+1 <strong css={`color: ${color}`}>{label}</strong> in your basket</span>;
     addFruit(newList, newNbFruits, newTP);
+    this.notify(message);
   };
 
-  removeFruit = (label, price) => {
+  removeFruit = (label, price, color) => {
     const { list, nbFruits, removeFruit, totalPrice } = this.props;
     const currentFruit = list.filter(f => f.label === label)[0];
     if (currentFruit.quantity > 0) {
@@ -48,7 +63,9 @@ class App extends React.Component {
         totalPrice - parseFloat(price) >= 0
           ? totalPrice - parseFloat(price)
           : totalPrice;
+      const message = <span>-1 <strong css={`color: ${color}`}>{label}</strong> in your basket</span>;
       removeFruit(newList, newNbFruits, newTP);
+      this.notify(message);
     }
   };
 
@@ -65,19 +82,15 @@ class App extends React.Component {
     const newNbFruits = 0;
     const newTP = 0;
     emptyCart(newList, newNbFruits, newTP);
+    this.notify("Your basket has been emptied");
   };
 
   render() {
     const { list, nbFruits, totalPrice } = this.props;
     return (
       <>
+        <Header totalPrice={totalPrice} />
         <StyledMain>
-          <Wrapper2>
-            <StyledH1>Shopyfroots</StyledH1>
-            <Wrapper5>
-              <Wrapper4>Total: {totalPrice}€</Wrapper4>
-            </Wrapper5>
-          </Wrapper2>
           <Wrapper1>
             {fruitsList.map((f, index) => (
               <FruitBasket
@@ -96,11 +109,22 @@ class App extends React.Component {
                 price={f.price}
               />
             ))}
+            <StyledToastContainer
+              closeButton={false}
+              hideProgressBar={true}
+              position={toast.POSITION.BOTTOM_RIGHT}
+              pauseOnFocusLoss={false}
+              autoClose={4000}
+            />
           </Wrapper1>
-          <MyBasket list={list} noFruits={nbFruits === 0} />
+          <MyBasket
+            fruitsList={fruitsList}
+            list={list}
+            noFruits={nbFruits === 0}
+          />
           <CTABar emptyCart={this.emptyCart} nbFruits={nbFruits} />
         </StyledMain>
-        <StyledFooter></StyledFooter>
+        <Footer />
       </>
     );
   }
@@ -127,52 +151,48 @@ const Wrapper1 = styled.div`
   flex: 1;
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
-  grid-gap: 15px;
-`;
-
-const Wrapper2 = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background: #59a96a;
-  color: white;
-  padding: 15px;
-  margin: -30px -30px 0;
-`;
-
-const Wrapper4 = styled.div`
-  align-self: flex-end;
-  border-radius: 3px;
-`;
-
-const Wrapper5 = styled.div`
-  display: flex;
-  align-items: flex-end;
-  font: 700 1.35rem Montserrat, sans-serif;
-
-  > :not(:first-child) {
-    margin-left: 15px;
-  }
+  grid-gap: 30px;
+  justify-items: center;
 `;
 
 const StyledMain = styled.main`
+  align-self: center;
   flex: 1;
   display: flex;
   flex-direction: column;
+  width: 80%;
+  padding: 30px;
 
   > :not(:first-child) {
     margin-top: 30px;
   }
 `;
 
-const StyledFooter = styled.footer`
-  background: #e0dddc;
-  padding: 30px 0;
-  margin: 0 -30px -30px;
-`;
+const StyledToastContainer = styled(ToastContainer)`
+  width: auto;
+  padding: 0;
 
-const StyledH1 = styled.h1`
-  font: 700 2rem Montserrat, sans-serif;
-  text-transform: uppercase;
-  margin: 0;
+  > :not(:first-child) {
+    margin-top: 7.5px;
+  }
+
+  & .toast-wrapper {
+    min-height: auto;
+    background: ${props => props.theme.colors.white};
+    color: ${props => props.theme.colors.oakwood};
+    padding: 15px;
+    border: ${props => `1px solid ${props.theme.colors.oakwood}`};
+    border-radius: 3px;
+    margin-bottom: 0;
+    box-shadow: 0 3px 3px hsla(27, 44%, 19%, 0.15);
+  }
+
+  & .toast-body {
+    font: 400 1rem "Open Sans", sans-serif;
+    text-align: center;
+  }
+
+  & .Toastify__close-button--default {
+    color: white;
+  }
 `;

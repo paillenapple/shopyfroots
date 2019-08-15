@@ -3,23 +3,23 @@ import reducer from "./../reducers";
 const initialState = {
   list: [
     {
-      label: "citron vert",
+      label: "lime",
       quantity: 0,
     },
     {
-      label: "pomme",
+      label: "apple",
       quantity: 0,
     },
     {
-      label: "cerise",
+      label: "cherry",
       quantity: 0,
     },
     {
-      label: "raisin",
+      label: "grapes",
       quantity: 0,
     },
     {
-      label: "citron",
+      label: "lemon",
       quantity: 0,
     },
     {
@@ -27,7 +27,7 @@ const initialState = {
       quantity: 0,
     },
     {
-      label: "poire",
+      label: "pear",
       quantity: 0,
     },
   ],
